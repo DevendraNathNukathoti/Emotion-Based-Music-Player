@@ -1,11 +1,48 @@
-# Emotion-Music-Recommendation
-Recommending music based on your facial expressions using FER 2013 dataset and Sporify api
+usic Recommendation based on Facial Emotion Recognition
+========================================================
 
-# Demo:
-![Demo](https://user-images.githubusercontent.com/51918054/123414505-9800c300-d5d1-11eb-9131-5914c255ce47.gif)
+**Mood Detection** model can detect face from any image and then it can predict the emotion from that face.
+We can do it from both still images and videos.
+After predicting the emotion from face our recommender system take the predicted emotion as input and generate recommendation by processing a Spotify dataset from a kaggle contest. We predicted the music mood from a model trained with **data_moods.csv**. The recommender system will generate top 40 songs to recommend for a spotify playlist.
 
-(Forgive the image quality and my expressions 😆)
+Mood Detection
+--------------
+**Mood Detection** model will predict one of the emotion among 7 emotions listed below-
+* Happy
+* Sad
+* Angry
+* Disgust
+* Surprise
+* Neutral
+* Fear
 
+Music Mood Prediction
+---------------------
+
+Every songs in the main dataset in the **Datasets.7z** folder predicted to one of the mood among 4 moods listed below-
+* Happy
+* Sad
+* Energetic
+* Calm
+
+By using a music mood classifier model we predicted each songs mood in our intermediate dataset **kaggleSpotifyMusicMood** in the Dataset.7z folder.
+
+Music Recommendation
+--------------------
+Our main project file is **music_recommender.ipynb** file. This recommendation system is using content based filtering. We follow these steps to recommend music-
+* Dataset Pre-processing
+* Feature Engineering
+* Connect to Spotify API
+* Create Playlist Vector
+* Generate Recommendation using cosine similarity
+
+So according to this project, we will take an image of an user and predict emotion using **Emotion Detection** model. By prioritizing the songs from our main dataset **kaggleSpotifyMoodFinal.csv** with music mood comparing with different face emotion, this system will generate top 40 songs to recommend for a particular spotify playlist. 
+
+
+
+
+Spotify Dataset link: https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks **(Spotify Dataset 1922-2021, ~600k Tracks)**                               
+Dataset for mood Classifier link: https://github.com/cristobalvch/Spotify-Machine-Learning/tree/master/data **(data_moods.csv)**
 # Project Description:
 The emotion recognition model is trained on FER 2013 dataset. It can detect 7 emotions. The project works by getting live video feed from web cam, pass it through the model to get a prediction of emotion. Then according to the emotion predicted, the app will fetch playlist of songs from Spotify through spotipy wrapper and recommend the songs by displaying them on the screen.
 
@@ -57,18 +94,3 @@ The entire project works perfectly fine. Live detection gives good frame rates d
 - index.html in 'templates' directory is the web page for the application. Basic HTML and CSS.
 - utils.py is an utility module for video streaming of web camera with threads to enable real time detection.
 - train.py is the script for image processing and training the model.
-
-# Variant:
-- Tkinter version of this app along with steps to run it is available <a href = "https://github.com/aj-naik/Emotion-Music-Recommendation/tree/tkinter">here</a>.
-
-# Issue:
-The app in current state can't be deployed on web as:
-- Opencv tries to open the camera on whatever device the app is running on. Code in current state makes use of webcam if available on server side not client side. So when app is run locally on a laptop Video Streaming through webcam is possible. But if it's deployed to a cloud, the app is stored in a data center somewhere which obviously doesn't have web camera connected to it and hence it doesn't work.
-
-# Further Work:
-- Instead of CSVs, create a databse and connect it to application. The DB will fetch songs for recommendations and new songs can be updated directly onto database
-- Add a feature which will update specified playlists for better and more recent recommendations, a specific day over a fixed duration say every sunday and append it to database
-- Directly play the song or redirect to the song on Spotify when user clicks on it.
-- Rewrite code such that Video Streaming is done on client side instead of server side so as it make the app deployable
-
-Note: Model accuracy is not that great. It is ~66%. Further training and finetuning required. May try Vision Transformer Model.
